@@ -1,36 +1,25 @@
-import java.util.Scanner;
-
 public class Main {
     public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
-        System.out.print("Enter an integer: ");
-        int number = input.nextInt();
+        System.out.println("Feet     Meters     |     Meters     Feet");
+        System.out.println("----------------------------------------------");
 
-        if (isPalindrome(number)) {
-            System.out.println(number + " is a palindrome.");
-        } else {
-            System.out.println(number + " is not a palindrome.");
+        for (double feet = 1.0, meters = 20.0; feet <= 10.0; feet++, meters += 5) {
+            double convertedMeters = footToMeter(feet);
+            double convertedFeet = meterToFoot(meters);
+
+            // Format and display the numbers
+            System.out.printf("%-8.1f  %-10.3f  |  %-10.1f  %-8.3f%n", 
+                feet, convertedMeters, meters, convertedFeet);
         }
-
-        input.close();
     }
 
-    // Return the reversal of an integer, e.g., reverse(456) returns 654
-    public static int reverse(int number) {
-        int reversedNumber = 0;
-
-        while (number != 0) {
-            int digit = number % 10;
-            reversedNumber = reversedNumber * 10 + digit;
-            number /= 10;
-        }
-
-        return reversedNumber;
+    /** Convert from feet to meters */
+    public static double footToMeter(double foot) {
+        return 0.305 * foot;
     }
 
-    // Return true if number is a palindrome
-    public static boolean isPalindrome(int number) {
-        return number == reverse(number);
+    /** Convert from meters to feet */
+    public static double meterToFoot(double meter) {
+        return 3.279 * meter;
     }
 }
-
