@@ -2,34 +2,83 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        long number;
         Scanner input = new Scanner(System.in);
-
-        // Prompt the user to enter a string
-        System.out.print("Enter a string: ");
-        String str = input.nextLine();
-
-        // Prompt the user to enter a character
-        System.out.print("Enter a character: ");
-        char a = input.next().charAt(0);
-
-        // Call the count method and display the result
-        int occurrences = count(str, a);
-        System.out.println("The character '" + a + "' occurs " + occurrences + " times in the string.");
-
+        System.out.println("Enter Credit card number as a long integer: ");
+        number = input.nextLong();
+        if (isValid(number))
+            System.out.println(number + " is valid");
+        else
+            System.out.println(number + " is invalid");
         input.close();
     }
 
-    // Return the number of occurrences of character 'a' in the string 'str'
-    public static int count(String str, char a) {
-        int count = 0;
-
-        for (int i = 0; i < str.length(); i++) {
-            if (str.charAt(i) == a) {
-                count++;
+    // Check if credit card number is valid
+    public static boolean isValid(long number) {
+        if (getSize(number) >= 13 && getSize(number) <= 16) {
+            if (prefixMatched(number, 4) || prefixMatched(number, 5) || prefixMatched(number, 37)
+                    || prefixMatched(number, 6)) {
+                if ((sumOfDoubleEvenPlace(number) + sumOfOddPlace(number)) % 10 == 0) {
+                    return true;
+                }
             }
         }
+        return false;
+    }
 
-        return count;
+    // Get the result from step 2
+    public static int sumOfDoubleEvenPlace(long number) {
+        String str = Long.toString(number);
+        String[] arr = str.split("");
+        int sum = 0;
+        for (int i = str.length() - 2; i >= 0; i -= 2) {
+            int temp = 2 * Integer.parseInt(arr[i]);
+            sum += getDigit(temp);
+        }
+        return sum;
+    }
+
+    // Return this number if it is a single digit or return the sum of two digits
+    public static int getDigit(int number) {
+        if (number >= 10) {
+            String str = Integer.toString(number);
+            String[] arr = str.split("");
+            int sum = Integer.parseInt(arr[0]) + Integer.parseInt(arr[1]);
+            return sum;
+        }
+        return number;
+    }
+
+    // Return Sum of odd digits
+    public static int sumOfOddPlace(long number) {
+        String str = Long.toString(number);
+        String[] arr = str.split("");
+        int sum = 0;
+        for (int i = str.length() - 1; i >= 0; i -= 2) {
+            sum += getDigit(Integer.parseInt(arr[i]));
+        }
+        return sum;
+    }
+
+    // Return true if the digit is a prefix for number
+    public static boolean prefixMatched(long number, int d) {
+        long i = getPrefix(number, getSize(d));
+        return i == d;
+    }
+
+    // Return number of digits in d
+    public static int getSize(long d) {
+        String str = Long.toString(d);
+        return str.length();
+    }
+
+    // Return the first k number of digits from number. If number of digits in number is less than k, return number
+    public static long getPrefix(long number, int k) {
+        String str = Long.toString(number);
+        String c = "";
+        for (int i = 0; i < k; i++) {
+            c += str.charAt(i);
+        }
+        return Long.parseLong(c);
     }
 }
-
