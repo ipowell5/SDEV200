@@ -1,49 +1,89 @@
-import java.util.Scanner;
+import java.lang.Math;
+
+class RegularPolygon {
+    private int n = 3;      // Default number of sides(3)
+    private double side = 1.0; // Default side length
+    private double X = 0.0;   // Default x-coordinate of the center
+    private double Y = 0.0;   // Default y-coordinate of the center
+
+    // Default constructor
+    public RegularPolygon() {
+    }
+
+    // Constructor with the number of sides and side length
+    public RegularPolygon(int sides, double sideLength) {
+        this.n = sides;
+        this.side = sideLength;
+    }
+
+    // Constructor with the number of sides, side length, and center coordinates
+    public RegularPolygon(int sides, double sideLength, double centerX, double centerY) {
+        this.n = sides;
+        this.side = sideLength;
+        this.X = centerX;
+        this.Y = centerY;
+    }
+
+    // Accessor methods
+    public int getn() {
+        return n;
+    }
+
+    public double getSide() {
+        return side;
+    }
+
+    public double getX() {
+        return X;
+    }
+
+    public double getY() {
+        return Y;
+    }
+
+    // Mutator methods
+    public void setn(int sides) {
+        this.n = sides;
+    }
+
+    public void setSide(double sideLength) {
+        this.side = sideLength;
+    }
+
+    public void setX(double centerX) {
+        this.X = centerX;
+    }
+
+    public void setY(double centerY) {
+        this.Y = centerY;
+    }
+
+    // Method to calculate the perimeter of the polygon
+    public double getPerimeter() {
+        return n * side;
+    }
+
+    // Method to calculate the area of the polygon
+    public double getArea() {
+        return (n * side * side) / (4 * Math.tan(Math.PI / n));
+    }
+}
 
 public class Main {
     public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
+        // Create RegularPolygon objects
+        RegularPolygon polygon1 = new RegularPolygon();  // Default constructor (3 sides, side length 1)
+        RegularPolygon polygon2 = new RegularPolygon(6, 4.0);  // 6 sides, side length 4, centered at (0, 0)
+        RegularPolygon polygon3 = new RegularPolygon(10, 4.0, 5.6, 7.8);  // 10 sides, side length 4, centered at (5.6, 7.8)
 
-        // Create two 3x3 matrices
-        int[][] matrix1 = new int[3][3];
-        int[][] matrix2 = new int[3][3];
+        // Display properties for each polygon
+        System.out.println("Polygon 1 - Sides: " + polygon1.getn() + ", Side Length: " + polygon1.getSide());
+        System.out.println("Polygon 2 - Sides: " + polygon2.getn() + ", Side Length: " + polygon2.getSide());
+        System.out.println("Polygon 3 - Sides: " + polygon3.getn() + ", Side Length: " + polygon3.getSide());
 
-        // values for first matrix
-        System.out.println("Enter values for the first 3x3 matrix:");
-        readMatrix(matrix1, input);
-
-        //values fo second matrix
-        System.out.println("Enter values for the second 3x3 matrix:");
-        readMatrix(matrix2, input);
-
-        // Are the matrices are identical
-        if (areMatricesEqual(matrix1, matrix2)) {
-            System.out.println("The two matrices are identical.");
-        } else {
-            System.out.println("The two matrices are not identical.");
-        }
-
-        input.close();
-    }
-
-    //value into a matrix
-    public static void readMatrix(int[][] matrix, Scanner input) {
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                matrix[i][j] = input.nextInt();
-            }
-        }
-    }
-
-    // Check if two matrices are identical or not
-    public static boolean areMatricesEqual(int[][] matrix1, int[][] matrix2) {
-        for (int i = 0; i < matrix1.length; i++) {
-            for (int j = 0; j < matrix1[i].length; j++) {
-                if (matrix1[i][j] != matrix2[i][j]) {
-                    return false;
-                }
-            }
-        }
-        return true;
+        // Calculate and display perimeter and area for each polygon
+        System.out.println("Polygon 1 - Perimeter: " + polygon1.getPerimeter() + ", Area: " + polygon1.getArea());
+        System.out.println("Polygon 2 - Perimeter: " + polygon2.getPerimeter() + ", Area: " + polygon2.getArea());
+        System.out.println("Polygon 3 - Perimeter: " + polygon3.getPerimeter() + ", Area: " + polygon3.getArea());
     }
 }
