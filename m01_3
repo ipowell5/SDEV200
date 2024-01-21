@@ -1,0 +1,54 @@
+import java.util.Scanner;
+import java.util.Arrays;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+
+        // Define matrix size
+        final int ROWS = 3;
+        final int COLUMNS = 3;
+
+        // Read the first matrix
+        System.out.println("Enter the first 3x3 matrix:");
+        int[][] matrix1 = readMatrix(ROWS, COLUMNS, input);
+
+        // Read the second matrix
+        System.out.println("Enter the second 3x3 matrix:");
+        int[][] matrix2 = readMatrix(ROWS, COLUMNS, input);
+
+        // Check if the matrices are identical
+        if (areMatricesEqual(matrix1, matrix2))
+            System.out.println("The two matrices are identical.");
+        else
+            System.out.println("The two matrices are not identical.");
+
+        input.close();
+    }
+
+    // Read a matrix from user input
+    public static int[][] readMatrix(int rows, int columns, Scanner input) {
+        int[][] matrix = new int[rows][columns];
+        System.out.println("Enter " + rows + " rows and " + columns + " columns:");
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                matrix[i][j] = input.nextInt();
+            }
+        }
+        return matrix;
+    }
+
+    // Check if two matrices are identical
+    public static boolean areMatricesEqual(int[][] matrix1, int[][] matrix2) {
+        if (matrix1.length != matrix2.length || matrix1[0].length != matrix2[0].length)
+            return false;
+
+        for (int i = 0; i < matrix1.length; i++) {
+            for (int j = 0; j < matrix1[0].length; j++) {
+                if (matrix1[i][j] != matrix2[i][j])
+                    return false;
+            }
+        }
+        return true;
+    }
+}
