@@ -1,0 +1,53 @@
+import java.util.Scanner;
+
+// Custom exception class for BinaryFormatException
+class BinaryFormatException extends NumberFormatException {
+    public BinaryFormatException(String message) {
+        super(message);
+    }
+}
+
+public class Main {
+
+    // convertbinary string to a decimal integer
+    public static int bin2Dec(String binaryString) throws BinaryFormatException {
+        int decimal = 0;
+
+        // check user input for validity as a binary string
+        for (int i = 0; i < binaryString.length(); i++) {
+            char ch = binaryString.charAt(i);
+            if (ch != '0' && ch != '1') {
+                throw new BinaryFormatException("Invalid binary string: " + binaryString);
+            }
+        }
+
+        // change binary string to decimal
+        for (int i = binaryString.length() - 1, j = 0; i >= 0; i--, j++) {
+            int bit = binaryString.charAt(i) - '0';
+            decimal += bit * Math.pow(2, j);
+        }
+
+        return decimal;
+    }
+
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+
+        System.out.print("Enter a binary number as a string: ");
+        String binaryString = input.nextLine();
+
+        try {
+            // call method to convert binary to decimal!!!***
+            int decimalEquivalent = bin2Dec(binaryString);
+
+            // Display results
+            System.out.println("Decimal equivalent of " + binaryString + " is " + decimalEquivalent);
+        } catch (BinaryFormatException e) {
+            // Handle BinaryFormatException
+            System.err.println("Not a binary number: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            // Handle NumberFormatException
+            System.err.println("Not a binary number: " + e.getMessage());
+        }
+    }
+}
