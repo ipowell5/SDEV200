@@ -1,56 +1,78 @@
+// Import the GregorianCalendar class from the java.util package
 import java.util.GregorianCalendar;
 
+// Create a public class named 'Main'
 public class Main {
+    // Declare private integer fields for 'year', 'month', and 'day'
     private int year;
     private int month;
     private int day;
 
+    // Create a no-arg constructor for the current date
     public Main() {
+        // GregorianCalendar object named 'calendar'
         GregorianCalendar calendar = new GregorianCalendar();
+        // Initialize 'year', 'month', and 'day' using todays date from 'calendar'
         year = calendar.get(GregorianCalendar.YEAR);
         month = calendar.get(GregorianCalendar.MONTH);
         day = calendar.get(GregorianCalendar.DAY_OF_MONTH);
     }
 
+    // Create a constructor for time in milliseconds
     public Main(long elapsedTime) {
+        // Call the setDate method to set the date
         setDate(elapsedTime);
     }
 
+    // Create a constructor that accepts year, month, and day values
     public Main(int year, int month, int day) {
+        // Initialize 'year', 'month', and 'day' using the provided values
         this.year = year;
         this.month = month;
         this.day = day;
     }
 
+    // Getter method for 'year'
     public int getYear() {
         return year;
     }
 
+    // Getter method for 'month'
     public int getMonth() {
         return month;
     }
 
+    // Getter method for 'day'
     public int getDay() {
         return day;
     }
 
+    // Method to set date based milliseconds
     public void setDate(long elapsedTime) {
+        // GregorianCalendar object named 'calendar'
         GregorianCalendar calendar = new GregorianCalendar();
+        // Set the time of 'calendar' object time
         calendar.setTimeInMillis(elapsedTime);
+        // Update 'year', 'month', and 'day' using 'calendar'
         this.year = calendar.get(GregorianCalendar.YEAR);
         this.month = calendar.get(GregorianCalendar.MONTH);
         this.day = calendar.get(GregorianCalendar.DAY_OF_MONTH);
     }
 
+    // Main method (entry point of the program)
     public static void main(String[] args) {
+        // Create a 'Main' object named 'currentDate' for the current date
         Main currentDate = new Main();
+        // Create a 'Main' object named 'customDate' with a specified elapsed time
         Main customDate = new Main(34355555133101L);
 
+        // Display current date information
         System.out.println("Current Date:");
         System.out.println("Year: " + currentDate.getYear());
         System.out.println("Month: " + (currentDate.getMonth() + 1)); // Adding 1 because months are 0-based
         System.out.println("Day: " + currentDate.getDay());
 
+        // Display custom date information
         System.out.println("\nCustom Date:");
         System.out.println("Year: " + customDate.getYear());
         System.out.println("Month: " + (customDate.getMonth() + 1)); // Adding 1 because months are 0-based
