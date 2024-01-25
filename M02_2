@@ -1,109 +1,109 @@
-import java.util.Scanner;
+import java.util.Scanner; // Import the "Scanner" for input
 
-public class Main {
-    public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
+public class Main { // Declare the Main class
+    public static void main(String[] args) { // Main method
+        Scanner input = new Scanner(System.in); // Create Scanner for input
 
-        System.out.print("Enter the three sides of the triangle: ");
-        double side1 = input.nextDouble();
-        double side2 = input.nextDouble();
-        double side3 = input.nextDouble();
+        System.out.print("Enter the three sides of the triangle: "); // Prompt for triangle side lengths
+        double side1 = input.nextDouble(); // Read the first side length
+        double side2 = input.nextDouble(); // Read the second side length
+        double side3 = input.nextDouble(); // Read the third side length
 
-        System.out.print("Enter the color of the triangle: ");
-        String color = input.next();
+        System.out.print("Enter the color of the triangle: "); // Prompt user to enter triangle color
+        String color = input.next(); // Read the color input
 
-        System.out.print("Is the triangle filled? (true/false): ");
-        boolean filled = input.nextBoolean();
+        System.out.print("Is the triangle filled? (true/false): "); // Prompt for triangle filled in or not
+        boolean filled = input.nextBoolean(); // Read if filled 
 
-        Triangle triangle = new Triangle(side1, side2, side3, color, filled);
+        Triangle triangle = new Triangle(side1, side2, side3, color, filled); // Create a Triangle object
 
-        System.out.println("Area: " + triangle.getArea());
-        System.out.println("Perimeter: " + triangle.getPerimeter());
-        System.out.println("Color: " + triangle.getColor());
-        System.out.println("Filled: " + triangle.isFilled());
+        System.out.println("Area: " + triangle.getArea()); // Display the area
+        System.out.println("Perimeter: " + triangle.getPerimeter()); // Display the triangle perimeter
+        System.out.println("Color: " + triangle.getColor()); // Display the triangle color!
+        System.out.println("Filled: " + triangle.isFilled()); // Display whether the triangle is filled or not
+    } // End of main method
+}
+
+class GeometricObject { // Declare the GeometricObject class
+    private String color; // Declare a private color field
+    private boolean filled; // Declare a private filled field
+
+    protected GeometricObject() { // Default constructor
+        color = "white"; // Default color is white
+        filled = false; // Not filled by default
+    }
+
+    protected GeometricObject(String color, boolean filled) { // Parameterized constructor
+        this.color = color; // Set the color
+        this.filled = filled; // Set the filled status
+    }
+
+    public String getColor() { // Getter for color
+        return color; // Return the color
+    }
+
+    public void setColor(String color) { // Setter for color
+        this.color = color; // Set the color
+    }
+
+    public boolean isFilled() { // Getter for filled
+        return filled; // Return whether it's filled
+    }
+
+    public void setFilled(boolean filled) { // Setter for filled
+        this.filled = filled; // Set the filled status
+    }
+
+    public double getArea() { // Abstract method for calculating area (to be implemented in subclasses)
+        return 0.0; // Default area is 0.0
+    }
+
+    public double getPerimeter() { // calculating perimeter
+        return 0.0; // Default perimeter is 0.0
     }
 }
 
-class GeometricObject {
-    private String color;
-    private boolean filled;
-
-    protected GeometricObject() {
-        color = "white";
-        filled = false;
-    }
-
-    protected GeometricObject(String color, boolean filled) {
-        this.color = color;
-        this.filled = filled;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public boolean isFilled() {
-        return filled;
-    }
-
-    public void setFilled(boolean filled) {
-        this.filled = filled;
-    }
-
-    public double getArea() {
-        return 0.0; // Implement this in subclasses
-    }
-
-    public double getPerimeter() {
-        return 0.0; // Implement this in subclasses
-    }
-}
-
-class Triangle extends GeometricObject {
-    private double side1;
+class Triangle extends GeometricObject { // Declare the Triangle class extending GeometricObject
+    private double side1; // Declare private fields for side lengths
     private double side2;
     private double side3;
 
-    public Triangle() {
-        this.side1 = 1.0;
+    public Triangle() { // Default constructor
+        this.side1 = 1.0; // Default side lengths are 1.0
         this.side2 = 1.0;
         this.side3 = 1.0;
     }
 
-    public Triangle(double side1, double side2, double side3, String color, boolean filled) {
-        super(color, filled);
-        this.side1 = side1;
+    public Triangle(double side1, double side2, double side3, String color, boolean filled) { // Parameterized constructor
+        super(color, filled); // Call the superclass constructor
+        this.side1 = side1; // Set side lengths
         this.side2 = side2;
         this.side3 = side3;
     }
 
-    public double getSide1() {
-        return side1;
+    public double getSide1() { // Getter for side1
+        return side1; // Return side1
     }
 
-    public double getSide2() {
-        return side2;
+    public double getSide2() { // Getter for side2
+        return side2; // Return side2
     }
 
-    public double getSide3() {
-        return side3;
+    public double getSide3() { // Getter for side3
+        return side3; // Return side3
     }
 
-    public double getArea() {
-        double s = (side1 + side2 + side3) / 2;
-        return Math.sqrt(s * (s - side1) * (s - side2) * (s - side3));
+    public double getArea() { // Calculate and return the area of the triangle!
+        double s = (side1 + side2 + side3) / 2; // Calculate half of the perimeter
+        return Math.sqrt(s * (s - side1) * (s - side2) * (s - side3)); // Use Heron's formula to calculate the area
     }
 
-    public double getPerimeter() {
-        return side1 + side2 + side3;
+    public double getPerimeter() { // Calculate and return the perimeter of the triangle
+        return side1 + side2 + side3; // Sum of all sides
     }
 
     @Override
-    public String toString() {
-        return "Triangle: side1 = " + side1 + ", side2 = " + side2 + ", side3 = " + side3;
+    public String toString() { // Override the toString method
+        return "Triangle: side1 = " + side1 + ", side2 = " + side2 + ", side3 = " + side3; // Return a string description
     }
 }
