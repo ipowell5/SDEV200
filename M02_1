@@ -1,0 +1,59 @@
+import java.util.GregorianCalendar;
+
+public class Main {
+    private int year;
+    private int month;
+    private int day;
+
+    public Main() {
+        GregorianCalendar calendar = new GregorianCalendar();
+        year = calendar.get(GregorianCalendar.YEAR);
+        month = calendar.get(GregorianCalendar.MONTH);
+        day = calendar.get(GregorianCalendar.DAY_OF_MONTH);
+    }
+
+    public Main(long elapsedTime) {
+        setDate(elapsedTime);
+    }
+
+    public Main(int year, int month, int day) {
+        this.year = year;
+        this.month = month;
+        this.day = day;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDate(long elapsedTime) {
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTimeInMillis(elapsedTime);
+        this.year = calendar.get(GregorianCalendar.YEAR);
+        this.month = calendar.get(GregorianCalendar.MONTH);
+        this.day = calendar.get(GregorianCalendar.DAY_OF_MONTH);
+    }
+
+    public static void main(String[] args) {
+        Main currentDate = new Main();
+        Main customDate = new Main(34355555133101L);
+
+        System.out.println("Current Date:");
+        System.out.println("Year: " + currentDate.getYear());
+        System.out.println("Month: " + (currentDate.getMonth() + 1)); // Adding 1 because months are 0-based
+        System.out.println("Day: " + currentDate.getDay());
+
+        System.out.println("\nCustom Date:");
+        System.out.println("Year: " + customDate.getYear());
+        System.out.println("Month: " + (customDate.getMonth() + 1)); // Adding 1 because months are 0-based
+        System.out.println("Day: " + customDate.getDay());
+    }
+}
