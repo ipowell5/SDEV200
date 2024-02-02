@@ -1,3 +1,15 @@
+/**
+ * Rational Number Calculator
+ * 
+ * this will allow you to perform basic arithmetic operations on rational numbers.
+ * (rational number is a fraction, represented as a numerator and denominator)
+ * You can input 2 rational numbers, and the program will perform addition, subtraction,
+ * multiplication, and division operations on them, simplifying the results and displaying them
+
+
+
+
+
 import java.math.BigInteger;
 
 public class Main extends Number implements Comparable<Main> {
