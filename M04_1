@@ -1,0 +1,71 @@
+import java.io.*;
+import java.util.*;
+
+public class MatchGroupingSymbols {
+    public static void main(String[] args) throws IOException {
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            // Prompt the user to enter a filename or '0' to quit
+            System.out.println("Enter the name of a Java source code file (or 0 to quit):");
+            String fileName = scanner.nextLine().trim();
+
+            if (fileName.equals("0")) {
+                System.out.println("Goodbye!");
+                break; // Exit if the user enters '0'
+            }
+
+            File file = new File(fileName);
+
+            if (!file.exists()) {
+                // Inform the user if the entered file doesn't exist and continue prompting
+                System.out.println("File not found: " + fileName);
+                continue;
+            }
+
+            // Check if symbols in file are "balanced"
+            if (areSymbolsBalanced(file)) {
+                System.out.println("The Java source code has correct grouping symbols.");
+            } else {
+                System.out.println("Error: The Java source code has incorrect or unbalanced symbols.");
+            }
+        }
+
+        scanner.close();
+    }
+
+    private static boolean areSymbolsBalanced(File file) throws IOException {
+        Stack<Character> symbolStack = new Stack<>();
+
+        try (Scanner input = new Scanner(file)) {
+            while (input.hasNextLine()) {
+                String line = input.nextLine();
+                for (char ch : line.toCharArray()) {
+                    if (isOpeningSymbol(ch)) {
+                        symbolStack.push(ch); // Push opening symbols onto the stack
+                    } else if (isClosingSymbol(ch)) {
+                        if (symbolStack.isEmpty() || !isMatchingPair(symbolStack.pop(), ch)) {
+                            return false; // Unbalanced or incorrect pair of symbols
+                        }
+                    }
+                }
+            }
+        }
+
+        return symbolStack.isEmpty(); // Check if all symbols are balanced
+    }
+
+    private static boolean isOpeningSymbol(char ch) {
+        return ch == '(' || ch == '{' || ch == '[';
+    }
+
+    private static boolean isClosingSymbol(char ch) {
+        return ch == ')' || ch == '}' || ch == ']';
+    }
+
+    private static boolean isMatchingPair(char opening, char closing) {
+        return (opening == '(' && closing == ')') ||
+               (opening == '{' && closing == '}') ||
+               (opening == '[' && closing == ']');
+    }
+}
