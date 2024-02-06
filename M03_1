@@ -1,86 +1,90 @@
-import java.util.Scanner;
+User
+add a line of code at the end to give the user the option to press 0 to quit
 
+
+// Main.java
+
+// Define the class 
 public class Main {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        boolean continueLoop = true;
+        // Create two Circle objects with different radii
+        Circle circle1 = new Circle(5.0);
+        Circle circle2 = new Circle(3.0);
 
-        while (continueLoop) {
-            // Create two Circle objects with different radii
-            Circle circle1 = new Circle(5.0);
-            Circle circle2 = new Circle(3.0);
+        // Print information for first Circle 
+        System.out.println("Circle 1's radius: " + circle1.getRadius());
+        System.out.println("Circle 1's area: " + circle1.getArea());
+        System.out.println("Circle 1's diameter: " + circle1.getDiameter());
+        System.out.println("Circle 1's perimeter: " + circle1.getPerimeter());
 
-            // Print information for the first Circle 
-            System.out.println("Circle 1's radius: " + circle1.getRadius());
-            System.out.println("Circle 1's area: " + circle1.getArea());
-            System.out.println("Circle 1's diameter: " + circle1.getDiameter());
-            System.out.println("Circle 1's perimeter: " + circle1.getPerimeter());
+        // Print information for second Circle 
+        System.out.println("Circle 2's radius: " + circle2.getRadius());
+        System.out.println("Circle 2's area: " + circle2.getArea());
+        System.out.println("Circle 2's diameter: " + circle2.getDiameter());
+        System.out.println("Circle 2's perimeter: " + circle2.getPerimeter());
 
-            // Print information for the second Circle 
-            System.out.println("Circle 2's radius: " + circle2.getRadius());
-            System.out.println("Circle 2's area: " + circle2.getArea());
-            System.out.println("Circle 2's diameter: " + circle2.getDiameter());
-            System.out.println("Circle 2's perimeter: " + circle2.getPerimeter());
-
-            // Compare the circles based on their radii and display the results
-            int comparisonResult = circle1.compareTo(circle2);
-            if (comparisonResult < 0) {
-                System.out.println("Circle 1 is smaller.");
-            } else if (comparisonResult > 0) {
-                System.out.println("Circle 1 is larger.");
-            } else {
-                System.out.println("Circle 1 and Circle 2 have the same radius.");
-            }
-
-            // Check if two circles are equal based on radii and display results
-            boolean areEqual = circle1.equals(circle2);
-            System.out.println("Circle 1 and Circle 2 are equal (based on radii): " + areEqual);
-
-            // Ask the user if they want to continue or quit
-            System.out.print("Press 0 to quit, or any other key to continue: ");
-            String input = scanner.nextLine();
-            if (input.equals("0")) {
-                continueLoop = false;
-            }
+        // Compare the circles based on their radii and display the results!
+        int comparisonResult = circle1.compareTo(circle2);
+        if (comparisonResult < 0) {
+            System.out.println("Circle 1 is smaller.");
+        } else if (comparisonResult > 0) {
+            System.out.println("Circle 1 is larger.");
+        } else {
+            System.out.println("Circle 1 and Circle 2 have the same radius.");
         }
 
-        // Close the scanner when done
-        scanner.close();
+        // Check if two circles are equal based on radii and display  results
+        boolean areEqual = circle1.equals(circle2);
+        System.out.println("Circle 1 and Circle 2 are equal (based on radii): " + areEqual);
     }
 }
 
+// Define a class named Circle to extends GeometricObject and implements Comparable<Circle>
 class Circle extends GeometricObject implements Comparable<Circle> {
+    // Declare a private field to store the radius
     private double radius;
 
+    // Default constructor for creating a Circle object  no arguments)
     public Circle() {
     }
 
+    // constructor for creating a Circle object with a specified radius
     public Circle(double radius) {
+        // Initialize the radius field for value x
         this.radius = radius;
     }
 
+    // Getter method 
     public double getRadius() {
         return radius;
     }
 
+    // Setter method. set new radius
     public void setRadius(double radius) {
         this.radius = radius;
     }
 
+    //alculate and return area of circle
     public double getArea() {
         return radius * radius * Math.PI;
     }
 
+    // calculate and return  diameter of circle
     public double getDiameter() {
         return 2 * radius;
     }
 
+    // calculate and return the  circumference
     public double getPerimeter() {
         return 2 * radius * Math.PI;
     }
 
+    // Override the compareTo method 
     @Override
     public int compareTo(Circle o) {
+        // Return a negative value if this circle has a smaller radius than the othercircle,
+        // a positive value if this circle has a greater radius than the other,
+        // and 0 if both have the same radii
         if (radius < o.radius) {
             return -1;
         } else if (radius > o.radius) {
@@ -90,15 +94,22 @@ class Circle extends GeometricObject implements Comparable<Circle> {
         }
     }
 
+    // Override the equals method
     @Override
     public boolean equals(Object obj) {
+        // Check provided object is an instance of Circle
         if (obj instanceof Circle) {
+            // Safely cast the object to Circle
             Circle c = (Circle) obj;
+            // true if the radii of both circles are the same
             return this.radius == c.radius;
         }
+        // Return false if the  object is not a Circle (or the radius are not the same)
         return false;
     }
 }
 
+// Define a GeometricObject class 
 class GeometricObject {
+    // Define the GeometricObject class
 }
