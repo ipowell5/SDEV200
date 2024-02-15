@@ -1,69 +1,91 @@
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.event.*;
+import javafx.application.Application;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.geometry.Pos;
+import javafx.geometry.Insets;
+import javafx.scene.paint.Color;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
-public class ColorSelector extends JFrame implements ChangeListener {
-    private JLabel colorLabel; // Declare a JLabel to display the colors
-    private JSlider redSlider, greenSlider, blueSlider, opacitySlider; // Declare JSliders for selecting colors  (red, green, blue) and opacity strength
+// Define the ChangeColor class, which extends the Application class taken from JavaFX
+public class ChangeColor extends Application {
+    // Declare variables to hold necessary components: colorLabel and sliders for red, green, blue, and opacity strength
+    private Label colorLabel;
+    private Slider redSlider, greenSlider, blueSlider, opacitySlider;
 
-    public ColorSelector() {
-        setTitle("Color Selector"); // Set the title of the JFrame
-        setSize(400, 200); // Set size
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // default close 
-
-        // Create a label to display the color
-        colorLabel = new JLabel("Color Preview", JLabel.CENTER);
-        colorLabel.setOpaque(true); // Set the label to be opaque to display the background 
-        colorLabel.setFont(new Font("Arial", Font.BOLD, 20)); // font for it
-        updateColor(); // update color
-
-        // Create sliders for red, green, blue, and opacity strength
-        redSlider = createSlider(0, 255, 127); // Create a slider for red with value 127
-        greenSlider = createSlider(0, 255, 127); // Create a slider for green with value 127
-        blueSlider = createSlider(0, 255, 127); // Create a slider for blue with value 127
-        opacitySlider = createSlider(0, 100, 100); // Create a slider for opacity with value 100
-
-        // Add sliders to the content pane
-        JPanel slidersPanel = new JPanel(new GridLayout(4, 1)); // Create a JPanel with a GridLayout
-        slidersPanel.add(redSlider); // Add red slider
-        slidersPanel.add(greenSlider); // Add green slider
-        slidersPanel.add(blueSlider); // Add blue slider
-        slidersPanel.add(opacitySlider); // Add opacity slider for strength
-
-        Container contentPane = getContentPane(); // content
-        contentPane.setLayout(new BorderLayout()); // Set Border
-        contentPane.add(slidersPanel, BorderLayout.CENTER); // Add sliders panel to the center
-        contentPane.add(colorLabel, BorderLayout.SOUTH); // Add color label
-
-        setVisible(true); // Make the JFrame visible
-    }
-
-    // Method to create a slider with specified range and initial value
-    private JSlider createSlider(int min, int max, int initial) {
-        JSlider slider = new JSlider(JSlider.HORIZONTAL, min, max, initial); // Create a horizontal slider with range and value
-        slider.setMajorTickSpacing(50); // Set major tick spacing
-        slider.setPaintTicks(true); // Display ticks on the slider
-        slider.setPaintLabels(true); // Display labels on the slider
-        slider.addChangeListener(this); // Add change listener to the slider
-        return slider; // Return the created slider
-    }
-
-    // Method to update the color via slider amount
-    private void updateColor() {
-        int red = redSlider.getValue(); // Get the red slider
-        int green = greenSlider.getValue(); // green slider
-        int blue = blueSlider.getValue(); // blue slider
-        float opacity = opacitySlider.getValue() / 100.0f; // Get the value of the opacity slider and convert to float num
-        colorLabel.setBackground(new Color(red, green, blue)); // Set the background color for label
-        colorLabel.setForeground(new Color(red, green, blue, (int)(255 * opacity))); // Set the foreground color of the label with opacity strength specified
-    }
-
-    @Override
-    public void stateChanged(ChangeEvent e) {
-        updateColor(); // Call updateColor method when any slider value changes
-    }
-
+    // Main method to launch the JavaFX application!
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(ColorSelector::new); // Create and show the GUI on the Event Dispatch Thread!!! 
+        launch(args);
     }
-}
+
+    // Override the start method of the Application class to set up the primary stage
+    @Override
+    public void start(Stage primaryStage) {
+        // Set the title of the primary stage.
+        primaryStage.setTitle("Color Selector");
+
+        // Create a label to display the selected color (RED, BLUE, OR GREEN)
+        colorLabel = new Label("Color Preview");
+        colorLabel.setFont(new javafx.scene.text.Font(20)); // Set font size.
+        colorLabel.setAlignment(javafx.geometry.Pos.CENTER); // Align the label text to the center
+        colorLabel.setPadding(new Insets(20)); // Set padding around the label for display 
+
+        // Create sliders for red, green, blue, and opacity strength- set values
+        redSlider = createSlider(0, 255, 127);
+        greenSlider = createSlider(0, 255, 127);
+        blueSlider = createSlider(0, 255, 127);
+        opacitySlider = createSlider(0, 100, 100);
+        opacitySlider.setValue(100); // Set the default value (100)
+
+        // Listen for changes in slider values and update the color label 
+        redSlider.valueProperty().addListener((obs, oldVal, newVal) -> updateColor());
+        greenSlider.valueProperty().addListener((obs, oldVal, newVal) -> updateColor());
+        blueSlider.valueProperty().addListener((obs, oldVal, newVal) -> updateColor());
+        opacitySlider.valueProperty().addListener((obs, oldVal, newVal) -> updateColor());
+
+        // Create a grid pane to organize the sliders and display 
+        GridPane sliderPane = new GridPane();
+        sliderPane.setAlignment(Pos.CENTER); // center grid
+        sliderPane.setHgap(10); // Set horizontal space
+        sliderPane.setVgap(5); // Set vertical space between node
+        sliderPane.setPadding(new Insets(10)); //padding around the grid
+        sliderPane.add(new Label("Red"), 0, 0); //label for Red slider
+        sliderPane.add(redSlider, 1, 0); // Add Red slider itself
+        sliderPane.add(new Label("Green"), 0, 1); // Add label for Green slider
+        sliderPane.add(greenSlider, 1, 1); // Add Green slider
+        sliderPane.add(new Label("Blue"), 0, 2); // Add label for Blue slider
+        sliderPane.add(blueSlider, 1, 2); // Add Blue slider
+        sliderPane.add(new Label("Opacity"), 0, 3); // Add label for Opacity slider
+        sliderPane.add(opacitySlider, 1, 3); // Add Opacity
+
+        // Create a border pane
+        BorderPane root = new BorderPane();
+        root.setTop(colorLabel); // put colorlabel at top
+        root.setCenter(sliderPane); // center
+
+        // Create a scene 
+        Scene scene = new Scene(root, 400, 300); // scene size
+        primaryStage.setScene(scene); // 
+        primaryStage.show(); // Display stages
+    }
+
+    // initialize method to create a slider with specified ranges and values
+    private Slider createSlider(int min, int max, int initialValue) {
+        Slider slider = new Slider(min, max, initialValue); // Create a new Slider instance
+        slider.setShowTickMarks(true); // tick marks for labeling the sliders
+        slider.setShowTickLabels(true); // Show tick labels 
+        slider.setMajorTickUnit(50); //
+        slider.setBlockIncrement(10); // Set the block increments
+        return slider; // Return to display this labeled slider
+    }
+
+    // Method to update the color of the label based on the slider value!
+    private void updateColor() {
+        int red = (int) redSlider.getValue(); // red amount
+        int green = (int) greenSlider.getValue(); // green amount
+        int blue = (int) blueSlider.getValue(); // blue amount
+        double opacity = opacitySlider.getValue
