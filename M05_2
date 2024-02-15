@@ -1,0 +1,64 @@
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+// JFrame that displays a circle whose color changes
+// based on mouse button clicks
+public class ChangeColor extends JFrame implements MouseListener {
+    // flag for whether the mouse button is pressed or not
+    boolean flag = false;
+
+    // Constructor to initialize the JFrame**!
+    public ChangeColor() {
+        setTitle("Change Circle Color On Mouse Action"); //  title
+        setSize(500, 500); // Set size of the JFrame.
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Close the JFrame when clicked
+        setVisible(true); // Set the JFrame visible.
+        addMouseListener(this); // Add mouse \ to the JFrame
+    }
+
+    // Override paint to draw the circle
+    public void paint(Graphics g) {
+        super.paint(g); // Call the superclass paint method
+        if (flag) // If mouse button is pressed, set color as black
+            g.setColor(Color.BLACK);
+        else // If mouse button is released, set the color as white
+            g.setColor(Color.WHITE);
+        g.fillOval(100, 100, 300, 300); // Draw a filled circle
+    }
+
+    // Override mousePressed method to handle mouse button pressed event
+    @Override
+    public void mousePressed(MouseEvent e) {
+        flag = true; // Set flag to "true" indicating mouse is pressed
+        repaint(); // Repaint the JFrame to update the circle color
+    
+
+    // Override mouseReleased method to handle mouse button released event
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        flag = false; // Set flag to false indicating mouse button is released/not clicked
+        repaint(); // Repaint the JFrame to update the circle color.
+    }
+
+    // override other mouse listener methods in case present 
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        // TODO Auto-generated method stub
+    }
+
+    // Main method to create an instance of ChangeColor class.
+    public static void main(String args[]) {
+        new ChangeColor(); // Creating an anonymous object of ChangeColor class.
+    }
+}
