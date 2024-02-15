@@ -1,0 +1,69 @@
+import java.awt.*;
+import javax.swing.*;
+import javax.swing.event.*;
+
+public class ColorSelector extends JFrame implements ChangeListener {
+    private JLabel colorLabel; // Declare a JLabel to display the colors
+    private JSlider redSlider, greenSlider, blueSlider, opacitySlider; // Declare JSliders for selecting colors  (red, green, blue) and opacity strength
+
+    public ColorSelector() {
+        setTitle("Color Selector"); // Set the title of the JFrame
+        setSize(400, 200); // Set size
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // default close 
+
+        // Create a label to display the color
+        colorLabel = new JLabel("Color Preview", JLabel.CENTER);
+        colorLabel.setOpaque(true); // Set the label to be opaque to display the background 
+        colorLabel.setFont(new Font("Arial", Font.BOLD, 20)); // font for it
+        updateColor(); // update color
+
+        // Create sliders for red, green, blue, and opacity strength
+        redSlider = createSlider(0, 255, 127); // Create a slider for red with value 127
+        greenSlider = createSlider(0, 255, 127); // Create a slider for green with value 127
+        blueSlider = createSlider(0, 255, 127); // Create a slider for blue with value 127
+        opacitySlider = createSlider(0, 100, 100); // Create a slider for opacity with value 100
+
+        // Add sliders to the content pane
+        JPanel slidersPanel = new JPanel(new GridLayout(4, 1)); // Create a JPanel with a GridLayout
+        slidersPanel.add(redSlider); // Add red slider
+        slidersPanel.add(greenSlider); // Add green slider
+        slidersPanel.add(blueSlider); // Add blue slider
+        slidersPanel.add(opacitySlider); // Add opacity slider for strength
+
+        Container contentPane = getContentPane(); // content
+        contentPane.setLayout(new BorderLayout()); // Set Border
+        contentPane.add(slidersPanel, BorderLayout.CENTER); // Add sliders panel to the center
+        contentPane.add(colorLabel, BorderLayout.SOUTH); // Add color label
+
+        setVisible(true); // Make the JFrame visible
+    }
+
+    // Method to create a slider with specified range and initial value
+    private JSlider createSlider(int min, int max, int initial) {
+        JSlider slider = new JSlider(JSlider.HORIZONTAL, min, max, initial); // Create a horizontal slider with range and value
+        slider.setMajorTickSpacing(50); // Set major tick spacing
+        slider.setPaintTicks(true); // Display ticks on the slider
+        slider.setPaintLabels(true); // Display labels on the slider
+        slider.addChangeListener(this); // Add change listener to the slider
+        return slider; // Return the created slider
+    }
+
+    // Method to update the color via slider amount
+    private void updateColor() {
+        int red = redSlider.getValue(); // Get the red slider
+        int green = greenSlider.getValue(); // green slider
+        int blue = blueSlider.getValue(); // blue slider
+        float opacity = opacitySlider.getValue() / 100.0f; // Get the value of the opacity slider and convert to float num
+        colorLabel.setBackground(new Color(red, green, blue)); // Set the background color for label
+        colorLabel.setForeground(new Color(red, green, blue, (int)(255 * opacity))); // Set the foreground color of the label with opacity strength specified
+    }
+
+    @Override
+    public void stateChanged(ChangeEvent e) {
+        updateColor(); // Call updateColor method when any slider value changes
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(ColorSelector::new); // Create and show the GUI on the Event Dispatch Thread!!! 
+    }
+}
