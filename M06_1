@@ -1,0 +1,88 @@
+import mysql.connector
+
+# Database configuration
+db_config = {
+    "host": "localhost",
+    "user": "isabellalpow5",
+    "password": "Violet!15",
+    "database": "%"  # Update with your database name
+}
+
+# Connect to the database
+try:
+    connection = mysql.connector.connect(**db_config)
+    cursor = connection.cursor()
+except mysql.connector.Error as err:
+    print(f"Error: {err}")
+    exit()
+
+def view_staff_record(staff_id):
+    # View a staff record by ID
+    query = "SELECT * FROM Staff WHERE id = %s"
+    cursor.execute(query, (staff_id,))
+    record = cursor.fetchone()
+    if record:
+        print("Staff Record:")
+        print(record)
+    else:
+        print("Staff ID not found.")
+
+def insert_staff_record(staff_data):
+    # Insert a new staff record
+    query = "INSERT INTO Staff (id, lastName, firstName, mi, address, city, state, telephone, email) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    cursor.execute(query, staff_data)
+    connection.commit()
+    print("New staff record inserted.")
+
+def update_staff_record(staff_id, staff_data):
+    # Update a staff record by ID
+    query = "UPDATE Staff SET lastName = %s, firstName = %s, mi = %s, address = %s, city = %s, state = %s, telephone = %s, email = %s WHERE id = %s"
+    cursor.execute(query, (staff_data + (staff_id,)))
+    connection.commit()
+    if cursor.rowcount > 0:
+        print("Staff record updated.")
+    else:
+        print("Staff ID not found.")
+
+while True:
+    print("1. View Staff Record")
+    print("2. Insert Staff Record")
+    print("3. Update Staff Record")
+    print("4. Exit")
+    choice = int(input("Enter your choice: "))
+
+    if choice == 1:
+        staff_id = input("Enter Staff ID to view: ")
+        view_staff_record(staff_id)
+    elif choice == 2:
+        staff_data = (
+            input("ID: "),
+            input("Last Name: "),
+            input("First Name: "),
+            input("MI: "),
+            input("Address: "),
+            input("City: "),
+            input("State: "),
+            input("Telephone: "),
+            input("Email: ")
+        )
+        insert_staff_record(staff_data)
+    elif choice == 3:
+        staff_id = input("Enter Staff ID to update: ")
+        staff_data = (
+            input("Last Name: "),
+            input("First Name: "),
+            input("MI: "),
+            input("Address: "),
+            input("City: "),
+            input("State: "),
+            input("Telephone: "),
+            input("Email: ")
+        )
+        update_staff_record(staff_id, staff_data)
+    elif choice == 4:
+        break
+
+# Close the database connection
+cursor.close()
+connection.close()
