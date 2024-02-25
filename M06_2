@@ -1,0 +1,110 @@
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Random;
+
+public class DatabasePerformanceComparison extends Application {
+
+    private static final String DB_URL = "jdbc:mysql://localhost/isabellalpow5"; 
+    private static final String USERNAME = "isabellalpow5"; 
+    private static final String PASSWORD = "Violet!15";
+
+    @Override
+    public void start(Stage primaryStage) {
+        // Create dialog box for connecting to the database
+        Dialog<Void> connectDialog = new Dialog<>();
+        connectDialog.setTitle("Connect to Database");
+        GridPane connectGrid = new GridPane();
+        connectGrid.setHgap(10);
+        connectGrid.setVgap(10);
+        connectGrid.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField tfURL = new TextField(DB_URL);
+        TextField tfUsername = new TextField(USERNAME);
+        PasswordField pfPassword = new PasswordField();
+        pfPassword.setPromptText("Password");
+        pfPassword.setText(PASSWORD); // Set the password field with the default password
+
+        connectGrid.add(new Label("Database URL:"), 0, 0);
+        connectGrid.add(tfURL, 1, 0);
+        connectGrid.add(new Label("Username:"), 0, 1);
+        connectGrid.add(tfUsername, 1, 1);
+        connectGrid.add(new Label("Password:"), 0, 2);
+        connectGrid.add(pfPassword, 1, 2);
+
+        connectDialog.getDialogPane().setContent(connectGrid);
+
+        ButtonType connectButtonType = new ButtonType("Connect", ButtonBar.ButtonData.OK_DONE);
+        connectDialog.getDialogPane().getButtonTypes().addAll(connectButtonType, ButtonType.CANCEL);
+
+        connectDialog.setResultConverter(buttonType -> {
+            if (buttonType == connectButtonType) {
+                try {
+                    // Connect to the database
+                    Connection connection = DriverManager.getConnection(tfURL.getText(), tfUsername.getText(), pfPassword.getText());
+
+                    // Insert records into the database
+                    insertRecords(connection);
+
+                    // Close the connection
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        });
+
+        // Create button to trigger the connect dialog
+        Button connectButton = new Button("Connect to Database");
+        connectButton.setOnAction(e -> connectDialog.showAndWait());
+
+        // Create VBox to hold the button
+        VBox vbox = new VBox(connectButton);
+        vbox.setSpacing(10);
+        vbox.setPadding(new Insets(10));
+
+        // Create scene and set it on stage
+        Scene scene = new Scene(vbox, 300, 200);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Database Performance Comparison");
+        primaryStage.show();
+    }
+
+    private void insertRecords(Connection connection) throws SQLException {
+        // Prepare SQL INSERT statement
+        String sql = "INSERT INTO Temp(num1, num2, num3) VALUES (?, ?, ?)";
+
+        // Create PreparedStatement
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            Random random = new Random();
+            for (int i = 0; i < 1000; i++) {
+                // Generate random numbers for num1, num2, num3
+                double num1 = random.nextDouble();
+                double num2 = random.nextDouble();
+                double num3 = random.nextDouble();
+
+                // Set parameters for PreparedStatement
+                statement.setDouble(1, num1);
+                statement.setDouble(2, num2);
+                statement.setDouble(3, num3);
+
+                // Execute INSERT statement
+                statement.executeUpdate();
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+}
