@@ -1,0 +1,27 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Quiz Result</title>
+</head>
+<body>
+<h1>Quiz Result</h1>
+<%
+    // Retrieve the correct answer from the previous page
+    int correctAnswer = Integer.parseInt(request.getParameter("correctAnswer"));
+    // Retrieve the user's answer
+    int userAnswer = Integer.parseInt(request.getParameter("userAnswer"));
+    // Check if the user's answer is correct
+    boolean isCorrect = (correctAnswer == userAnswer);
+%>
+<p>Your answer: <%= userAnswer %></p>
+<p>Correct answer: <%= correctAnswer %></p>
+<% if(isCorrect) { %>
+    <p>Congratulations! Your answer is correct.</p>
+<% } else { %>
+    <p>Sorry, your answer is incorrect.</p>
+<% } %>
+</body>
+</html>
